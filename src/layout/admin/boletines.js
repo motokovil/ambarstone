@@ -59,6 +59,7 @@ export default function Boletines(){
 
 	const classes = useStyles();
 	const history = useHistory();
+	const backend = "https://newsletter8.herokuapp.com/"
 
 	//Hooks
 	const [user, setUser] = useState({})
@@ -81,7 +82,7 @@ export default function Boletines(){
         try {
             let access = jwt.verify(token, 'motk')
             if(access.user_id){
-                fetch("http://localhost:8000/users/"+access.user_id+"/")
+                fetch(backend+"api/v1/users/"+access.user_id+"/")
                 .then(data=>data.json())
                 .then(user=>{
                     console.log("Logged in")
@@ -101,7 +102,7 @@ export default function Boletines(){
 	const getBoletines = useCallback(
 		() => {
 
-			fetch("http://localhost:8000/boletines/", {
+			fetch(backend+"api/v1/boletines/", {
 				method: "GET",
 				headers: {
 					"Content-type": "application/json",
@@ -117,7 +118,7 @@ export default function Boletines(){
 
 	const getUsers = useCallback(
 		() => {
-			fetch("http://localhost:8000/users/", {
+			fetch(backend+"api/v1/users/", {
 				method: "GET",
 				headers: {
 					"Content-type": "application/json",
@@ -133,7 +134,7 @@ export default function Boletines(){
 
 	const postBoletin = (event) => {
 		event.preventDefault()
-		fetch("http://localhost:8000/boletines/", {
+		fetch(backend+"api/v1/boletines/", {
 				method: "POST",
 				body: JSON.stringify(boletinForm),
 				headers: {
@@ -143,7 +144,7 @@ export default function Boletines(){
 		})
 		.then(res => res.json())
 		.then(res=> {
-			fetch("http://localhost:8000/boletines/"+res.id+"/setautor/", {
+			fetch(backend+"api/v1/boletines/"+res.id+"/setautor/", {
 				method: "POST",
 				body: JSON.stringify({
 					"autor_id": user.id
@@ -186,7 +187,7 @@ export default function Boletines(){
 
 	const deleteBoletin = (event, id) => {
 		event.preventDefault()
-		fetch("http://localhost:8000/boletines/"+id, {
+		fetch(backend+"api/v1/boletines/"+id, {
 				method: "DELETE",
 				headers: {
 					"Content-type": "application/json",
@@ -199,7 +200,7 @@ export default function Boletines(){
 
 	const patchBoletin = (event, id) => {
 		event.preventDefault()
-		fetch("http://localhost:8000/boletines/"+id+"/", {
+		fetch(backend+"api/v1/boletines/"+id+"/", {
 				method: "PATCH",
 				body: JSON.stringify(boletinForm),
 				headers: {

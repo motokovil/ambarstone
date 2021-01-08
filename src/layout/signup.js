@@ -29,7 +29,7 @@ export default function Login(){
     
     //Hooks
     const [loginForm, setLoginForm] = useState({});
-
+    const backend = "https://newsletter8.herokuapp.com/"
     //Material UI
     const classes = useStyles()
 
@@ -40,7 +40,7 @@ export default function Login(){
 
     const signUp = (event) => {
         event.preventDefault()
-        fetch("http://localhost:8000/users/", {
+        fetch( backend + "users/", {
             method: "POST",
             body: JSON.stringify(loginForm),
             headers: { 
@@ -51,7 +51,7 @@ export default function Login(){
         .then(data => {
             console.log(data)
             if(data.username === loginForm.username){
-                fetch("http://localhost:8000/users/"+data.id+"/encrypt")
+                fetch( backend + "users/"+data.id+"/encrypt")
             }
         })
         .catch(err => console.log(err))

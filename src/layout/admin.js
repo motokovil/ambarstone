@@ -108,6 +108,7 @@ export default function PersistentDrawerLeft() {
 	const [, setIsSuper] = useState({ superuser: null })
 	const [cookies] = useCookies(['token']);
 	const [user, setUser] = useState({})
+	const backend = "https://newsletter8.herokuapp.com/"
 	
 	let match = useRouteMatch();
 
@@ -124,7 +125,7 @@ export default function PersistentDrawerLeft() {
 			try {
 				let access = jwt.verify(token, 'motk')
 				if (access.user_id) {
-					fetch("http://localhost:8000/users/" + access.user_id + "/")
+					fetch(backend + "api/v1/users/" + access.user_id + "/")
 						.then(data => data.json())
 						.then(user => {
 							console.log("Logged in")

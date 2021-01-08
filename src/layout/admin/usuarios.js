@@ -32,6 +32,7 @@ const useStyles = makeStyles({
 export default function Usuarios() {
 
     const classes = useStyles();
+    const backend = "https://newsletter8.herokuapp.com/"
 
     //Hooks
     const [, setIsSuper] = useState({ superuser: null })
@@ -43,7 +44,7 @@ export default function Usuarios() {
         try {
             let access = jwt.verify(token, 'motk')
             if (access.user_id) {
-                fetch("http://localhost:8000/users/" + access.user_id + "/")
+                fetch(backend+"api/v1/users/" + access.user_id + "/")
                     .then(data => data.json())
                     .then(user => {
                         console.log("Logged in")
@@ -59,7 +60,7 @@ export default function Usuarios() {
     }
     const getUsers = useCallback(
         () => {
-            fetch("http://localhost:8000/users/", {
+            fetch(backend+"api/v1/users/", {
                     method: "GET",
                     headers: {
                         "Content-type": "application/json",
