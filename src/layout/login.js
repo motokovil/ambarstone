@@ -110,7 +110,7 @@ export default function Login(){
     
     useEffect(()=>{
         auth(cookies.token)
-        // permission(isSuper.superuser)
+        permission(isSuper.superuser)
     },[cookies.token, isSuper.superuser, permission])
 
     return (
