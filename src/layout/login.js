@@ -82,10 +82,8 @@ export default function Login(){
                 .then(user=>{
                     if(user.is_superuser){
                         history.push("/Admin")
-                        window.location.reload()
                     }else{
                         history.push("/Dashboard")
-                        window.location.reload()
                     }
                 })
             }
