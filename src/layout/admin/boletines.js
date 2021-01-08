@@ -134,7 +134,6 @@ export default function Boletines(){
 
 	const postBoletin = (event) => {
 		event.preventDefault()
-		setboletinForm({...boletinForm, "editor" : user.id })
 		fetch(backend+"api/v1/boletines/", {
 				method: "POST",
 				body: JSON.stringify(boletinForm),
@@ -167,6 +166,7 @@ export default function Boletines(){
 
 	const handleOpenMPost = () => {
 		setModalPost(true);
+		setboletinForm({...boletinForm, "editor" : user.id })
 	};
 
 	const handleCloseMPost = () => {
