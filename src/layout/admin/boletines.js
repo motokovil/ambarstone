@@ -145,7 +145,7 @@ export default function Boletines(){
 		})
 		.then(res => res.json())
 		.then(res=> {
-			fetch(backend+"api/v1/boletines/"+res.id+"/setautor/", {
+			fetch(backend+"api/v1/boletines/"+res.id, {
 				method: "POST",
 				body: JSON.stringify({
 					"autor_id": user.id
