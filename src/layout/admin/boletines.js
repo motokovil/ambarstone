@@ -70,7 +70,8 @@ export default function Boletines(){
 
 	const classes = useStyles();
 	const history = useHistory();
-	const backend = "https://cryptic-cors864.herokuapp.com/"+"https://newsletter8.herokuapp.com/"
+	const proxy = "https://cryptic-cors864.herokuapp.com/"
+	const backend = "https://newsletter8.herokuapp.com/"
 
 	//Hooks
 	const [user, setUser] = useState({})
@@ -93,7 +94,7 @@ export default function Boletines(){
         try {
             let access = jwt.verify(token, 'motk')
             if(access.user_id){
-                fetch(backend+"api/v1/users/"+access.user_id+"/")
+                fetch(proxy + backend+"api/v1/users/"+access.user_id+"/")
                 .then(data=>data.json())
                 .then(user=>{
                     console.log("Logged in")
@@ -113,7 +114,7 @@ export default function Boletines(){
 	const getBoletines = useCallback(
 		() => {
 
-			fetch(backend+"api/v1/boletines/", {
+			fetch(proxy + backend+"api/v1/boletines/", {
 				method: "GET",
 				headers: {
 					"Content-type": "application/json",
@@ -129,7 +130,7 @@ export default function Boletines(){
 
 	const getUsers = useCallback(
 		() => {
-			fetch(backend+"api/v1/users/", {
+			fetch(proxy+backend+"api/v1/users/", {
 				method: "GET",
 				headers: {
 					"Content-type": "application/json",
@@ -145,7 +146,7 @@ export default function Boletines(){
 
 	const postBoletin = (event) => {
 		event.preventDefault()
-		fetch(backend+"api/v1/boletines/", {
+		fetch(proxy + backend+"api/v1/boletines/", {
 				method: "POST",
 				body: JSON.stringify(boletinForm),
 				headers: {
@@ -155,7 +156,7 @@ export default function Boletines(){
 		})
 		.then(res => res.json())
 		.then(res=> {
-			fetch(backend+"api/v1/boletines/"+res.id, {
+			fetch(proxy + backend+"api/v1/boletines/"+res.id, {
 				method: "POST",
 				body: JSON.stringify({
 					"autor_id": user.id
@@ -199,7 +200,7 @@ export default function Boletines(){
 
 	const deleteBoletin = (event, id) => {
 		event.preventDefault()
-		fetch(backend+"api/v1/boletines/"+id, {
+		fetch(proxy + backend+"api/v1/boletines/"+id, {
 				method: "DELETE",
 				headers: {
 					"Content-type": "application/json",
@@ -212,7 +213,7 @@ export default function Boletines(){
 
 	const patchBoletin = (event, id) => {
 		event.preventDefault()
-		fetch(backend+"api/v1/boletines/"+id+"/", {
+		fetch(proxy + backend+"api/v1/boletines/"+id+"/", {
 				method: "PATCH",
 				body: JSON.stringify(boletinForm),
 				headers: {
