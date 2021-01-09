@@ -33,7 +33,7 @@ export default function Login(){
     //Material UI
     const classes = useStyles()
     const history = useHistory()
-    const backend = "https://newsletter8.herokuapp.com/"
+    const backend = "https://cryptic-cors864.herokuapp.com/"+"https://newsletter8.herokuapp.com/"
 
     //Hooks
     const [loginForm, setLoginForm] = useState({email: '', password: ''});

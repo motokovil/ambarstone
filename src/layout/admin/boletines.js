@@ -29,6 +29,17 @@ import Select from '@material-ui/core/Select';
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme)=>({
+	imagen:{
+		width:'40%'
+	},
+	content: {
+		display: 'flex',
+		flexDirection: 'column',
+		flexGrow: 1,
+	},
+	rooot: {
+		display: 'flex',
+	},
 	root: {
 		minWidth: 200,
 	},
@@ -59,7 +70,7 @@ export default function Boletines(){
 
 	const classes = useStyles();
 	const history = useHistory();
-	const backend = "https://newsletter8.herokuapp.com/"
+	const backend = "https://cryptic-cors864.herokuapp.com/"+"https://newsletter8.herokuapp.com/"
 
 	//Hooks
 	const [user, setUser] = useState({})
@@ -70,7 +81,7 @@ export default function Boletines(){
 	const [boletin, setBoletin] = useState({})
 	const [ModalPost, setModalPost] = useState(false);
 	const [openMPatch, setModalPatch] = useState(false)
-	const [filter, setfilter] = useState("");
+	const [filter, setfilter] = useState("None");
 
 	const onChangeInput = (event) => {
         setboletinForm({...boletinForm, [event.target.name] : event.target.value });
@@ -106,7 +117,7 @@ export default function Boletines(){
 				method: "GET",
 				headers: {
 					"Content-type": "application/json",
-					"Authorization": "Bearer "+cookies.token,
+					"Authorization": "Bearer " + cookies.token,
 				}
 			})
 			.then(res => res.json())
@@ -287,16 +298,11 @@ export default function Boletines(){
 				<Alert severity="error">No hay boletines disponibles.</Alert>
 			</Grid>: 
 			boletines.map(item => (
-				<Grid item key={item.id} xs={12} >
+				<Grid item key={item.id} xs={12} lg={4}>
 					<Card className={classes.root}>
-						<CardActionArea onClick={()=>boletinState(item)}>
-							<CardMedia
-							component="img"
-							alt="Contemplative Reptile"
-							height="140"
-							image={item.imagen}
-							/>
-							<CardContent>
+						<CardActionArea className={classes.rooot} onClick={()=>boletinState(item)}>
+							
+							<CardContent className={classes.content}>
 								<Typography gutterBottom variant="h6" component="h2">
 									{item.titulo}
 								</Typography>
@@ -309,6 +315,14 @@ export default function Boletines(){
 								Updated: {moment(item.updated).fromNow()}
 								</Typography>
 							</CardContent>
+
+							<CardMedia
+							className={classes.imagen}
+							component="img"
+							alt="Contemplative Reptile"
+							height="140"
+							image={item.imagen}
+							/>
 						</CardActionArea>
 	
 						<CardActions>
