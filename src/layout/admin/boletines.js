@@ -30,7 +30,7 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme)=>({
 	root: {
-		maxWidth: 200,
+		minWidth: 200,
 	},
 	modal: {
 		display: 'flex',
