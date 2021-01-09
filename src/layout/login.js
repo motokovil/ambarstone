@@ -33,7 +33,8 @@ export default function Login(){
     //Material UI
     const classes = useStyles()
     const history = useHistory()
-    const backend = "https://cryptic-cors864.herokuapp.com/"+"https://newsletter8.herokuapp.com/"
+    const proxy = "https://cryptic-cors864.herokuapp.com/"
+    const backend = "https://newsletter8.herokuapp.com/"
 
     //Hooks
     const [loginForm, setLoginForm] = useState({email: '', password: ''});
@@ -51,7 +52,7 @@ export default function Login(){
         try {
             let access = jwt.verify(token, 'motk')
             if(access.user_id){
-                fetch( backend + "api/v1/users/"+access.user_id+"/")
+                fetch(proxy + backend + "api/v1/users/"+access.user_id+"/")
                 .then(data=>data.json())
                 .then(user=>{
                     console.log("Logged in")
@@ -67,7 +68,7 @@ export default function Login(){
     }
     const login = (event) => {
         event.preventDefault()
-        fetch( backend + "api/token/", {
+        fetch(proxy + backend + "api/token/", {
             method: "POST",
             body: JSON.stringify(loginForm),
             headers: { "Content-type": "application/json" }
@@ -77,7 +78,7 @@ export default function Login(){
             let access = jwt.verify(data.access,'motk')
             if (access.user_id){
                 setToken(data.access)
-                fetch( backend + "api/v1/users/" + access.user_id + "/")
+                fetch(proxy + backend + "api/v1/users/" + access.user_id + "/")
                 .then(data => data.json())
                 .then(user=>{
                     if(user.is_superuser){
