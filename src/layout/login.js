@@ -1,12 +1,14 @@
 import React, {useState, useEffect, useCallback} from 'react'
 import {useCookies} from "react-cookie"
 import TextField from '@material-ui/core/TextField'
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 import { Link, useHistory } from "react-router-dom"
-const jwt = require('jsonwebtoken')
 
+const jwt = require('jsonwebtoken')
 //MATERIAL UI
 const useStyles = makeStyles((theme) => ({
     Button:{
@@ -68,6 +70,7 @@ export default function Login(){
     }
     const login = (event) => {
         event.preventDefault()
+
         fetch(proxy + backend + "api/token/", {
             method: "POST",
             body: JSON.stringify(loginForm),
@@ -77,6 +80,7 @@ export default function Login(){
         .then(data => {
             let access = jwt.verify(data.access,'motk')
             if (access.user_id){
+                toast.success("Welcome")
                 setToken(data.access)
                 fetch(proxy + backend + "api/v1/users/" + access.user_id + "/")
                 .then(data => data.json())
@@ -89,7 +93,10 @@ export default function Login(){
                 })
             }
         })
-        .catch(err => console.log(err.message))
+        .catch(err => {
+            console.log(err.message)
+            toast.error(err.message)
+        })
     }
 
     const permission = useCallback(
@@ -119,6 +126,7 @@ export default function Login(){
         bgcolor='primary.main'
         height='100vh'
         >
+            <ToastContainer />
             <Box
             p={2}
             display='flex'
