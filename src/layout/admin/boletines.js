@@ -200,7 +200,7 @@ export default function Boletines(){
 
 	const deleteBoletin = (event, id) => {
 		event.preventDefault()
-		fetch(proxy + backend+"api/v1/boletines/"+id, {
+		fetch(proxy + backend+"api/v1/boletines/"+id+"/", {
 				method: "DELETE",
 				headers: {
 					"Content-type": "application/json",
