@@ -82,7 +82,7 @@ export default function Boletines(){
 	const [boletin, setBoletin] = useState({})
 	const [ModalPost, setModalPost] = useState(false);
 	const [openMPatch, setModalPatch] = useState(false)
-	const [filter, setfilter] = useState("None");
+	const [filter, setfilter] = useState("ALL");
 
 	const onChangeInput = (event) => {
         setboletinForm({...boletinForm, [event.target.name] : event.target.value });
@@ -112,7 +112,7 @@ export default function Boletines(){
 	);
 
 	const getBoletines = useCallback(
-		() => {
+		(filtro) => {
 
 			fetch(proxy + backend+"api/v1/boletines/", {
 				method: "GET",
@@ -124,6 +124,22 @@ export default function Boletines(){
 			.then(res => res.json())
 			.then(res=> setboletines(res.results))
 			.catch(error=>console.log(error))
+
+			if(filtro === "ALL"){
+				
+			} else {
+				console.log("Diferent")
+				fetch(proxy + backend+"api/v1/boletines/?editor="+filtro, {
+					method: "GET",
+					headers: {
+						"Content-type": "application/json",
+						"Authorization": "Bearer " + cookies.token,
+					}
+				})
+				.then(res => res.json())
+				.then(res=> setboletines(res.results))
+				.catch(error=>console.log(error))
+			}
 		},
 		[cookies.token],
 	)
@@ -235,9 +251,9 @@ export default function Boletines(){
 
 	useEffect(()=>{
 		auth(cookies.token)
-		getBoletines()
+		getBoletines(filter)
 		getUsers()
-	},[cookies.token, getBoletines,auth, getUsers])
+	},[cookies.token, getBoletines,auth, getUsers,filter])
 
 	return (
 		<Box>
@@ -267,12 +283,12 @@ export default function Boletines(){
 						label="Autor"
 						value={filter}
 						>
-							<MenuItem value="None">
-								<em>None</em>
+							<MenuItem value="ALL">
+								<em>ALL</em>
 							</MenuItem>
 							{
 								users.map(user => (
-									<MenuItem key={user.id} value={user.username}>
+									<MenuItem key={user.id} value={user.id}>
 										{user.username}
 									</MenuItem>
 								))
@@ -299,7 +315,7 @@ export default function Boletines(){
 				<Alert severity="error">No hay boletines disponibles.</Alert>
 			</Grid>: 
 			boletines.map(item => (
-				<Grid item key={item.id} xs={12} lg={4}>
+				<Grid item key={item.id} xs={12} md={6} lg={4}>
 					<Card className={classes.root}>
 						<CardActionArea className={classes.rooot} onClick={()=>boletinState(item)}>
 							

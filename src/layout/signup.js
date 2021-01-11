@@ -4,6 +4,8 @@ import Box from '@material-ui/core/Box'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import {makeStyles} from '@material-ui/core/styles';
+import { ToastContainer, toast } from 'react-toastify';
+import { useHistory } from "react-router-dom"
 
 const useStyles = makeStyles((theme) => ({
     Button:{
@@ -29,7 +31,9 @@ export default function Login(){
     
     //Hooks
     const [loginForm, setLoginForm] = useState({});
+    const proxy = "https://cryptic-cors864.herokuapp.com/"
     const backend = "https://newsletter8.herokuapp.com/"
+    const history = useHistory()
     //Material UI
     const classes = useStyles()
 
@@ -40,18 +44,21 @@ export default function Login(){
 
     const signUp = (event) => {
         event.preventDefault()
-        fetch( backend + "users/", {
+        fetch( proxy + backend + "api/v1/users/", {
             method: "POST",
             body: JSON.stringify(loginForm),
             headers: { 
                 "Content-type": "application/json"
             }
         })
-        .then(res => res.json())
+        .then(res => {
+            if(res.status === 400){toast.error("Nop")}
+            else {return res.json()}
+        })
         .then(data => {
-            console.log(data)
             if(data.username === loginForm.username){
-                fetch( backend + "users/"+data.id+"/encrypt")
+                fetch( proxy + backend + "api/v1/users/" + data.id + "/encrypt")
+                .then( history.push("/Login"))
             }
         })
         .catch(err => console.log(err))
@@ -62,6 +69,7 @@ export default function Login(){
         bgcolor='primary.main'
         height='100vh'
         >
+            <ToastContainer />
             <Box 
             p={2} 
             display='flex'
