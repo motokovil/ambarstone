@@ -274,8 +274,12 @@ export default function Boletines(){
 					</Grid>
 					<Grid item>
 						<ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-							<Button>All</Button>
-							<Button>own</Button>
+							<Button
+							onClick={()=>setfilter("ALL")}
+							>All</Button>
+							<Button
+							onClick={()=>setfilter(user.id)}
+							>own</Button>
 						</ButtonGroup>
 					</Grid>
 					<Grid>
@@ -313,7 +317,7 @@ export default function Boletines(){
 			</Box>
 
 			<Grid container spacing={2}>
-			{boletines[0] === null?
+			{boletines.length === 0?
 			<Grid item>
 				<Alert severity="error">No hay boletines disponibles.</Alert>
 			</Grid>: 
