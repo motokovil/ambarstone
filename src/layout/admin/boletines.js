@@ -112,7 +112,7 @@ export default function Boletines(){
 	);
 
 	const getBoletines = useCallback(
-		(filtro) => {
+		() => {
 
 			fetch(proxy + backend+"api/v1/boletines/", {
 				method: "GET",
@@ -124,22 +124,6 @@ export default function Boletines(){
 			.then(res => res.json())
 			.then(res=> setboletines(res.results))
 			.catch(error=>console.log(error))
-
-			if(filtro === "ALL"){
-				
-			} else {
-				console.log("Diferent")
-				fetch(proxy + backend+"api/v1/boletines/?editor="+filtro, {
-					method: "GET",
-					headers: {
-						"Content-type": "application/json",
-						"Authorization": "Bearer " + cookies.token,
-					}
-				})
-				.then(res => res.json())
-				.then(res=> setboletines(res.results))
-				.catch(error=>console.log(error))
-			}
 		},
 		[cookies.token],
 	)
@@ -245,15 +229,34 @@ export default function Boletines(){
 		.catch(err => console.log(err))
 	}
 
+	const filterBoletines = useCallback(
+		(filtro) => {
+			if(filtro !== "ALL"){
+				fetch(proxy + backend+"api/v1/boletines/?editor="+filtro, {
+					method: "GET",
+					headers: {
+						"Content-type": "application/json",
+						"Authorization": "Bearer " + cookies.token,
+					}
+				})
+				.then(res => res.json())
+				.then(res=> setboletines(res.results))
+				.catch(error=>console.log(error))
+			}
+		},[cookies.token]
+	)
+
 	const handleFilter = (event) => {
 		setfilter(event.target.value);
+		
 	}
 
 	useEffect(()=>{
 		auth(cookies.token)
-		getBoletines(filter)
+		getBoletines()
 		getUsers()
-	},[cookies.token, getBoletines,auth, getUsers,filter])
+		filterBoletines(filter)
+	},[cookies.token, getBoletines,auth, getUsers,filter, filterBoletines])
 
 	return (
 		<Box>
