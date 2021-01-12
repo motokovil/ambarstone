@@ -30,18 +30,17 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme)=>({
 	imagen:{
-		width:'40%'
+		width:'40%',
+		Height: '100%',
 	},
 	content: {
 		display: 'flex',
 		flexDirection: 'column',
 		flexGrow: 1,
 	},
-	rooot: {
-		display: 'flex',
-	},
 	root: {
 		minWidth: 200,
+		display: 'flex',
 	},
 	modal: {
 		display: 'flex',
@@ -83,6 +82,7 @@ export default function Boletines(){
 	const [ModalPost, setModalPost] = useState(false);
 	const [openMPatch, setModalPatch] = useState(false)
 	const [filter, setfilter] = useState("ALL");
+	const [data, setData] = useState({})
 
 	const onChangeInput = (event) => {
         setboletinForm({...boletinForm, [event.target.name] : event.target.value });
@@ -122,7 +122,10 @@ export default function Boletines(){
 				}
 			})
 			.then(res => res.json())
-			.then(res=> setboletines(res.results))
+			.then(res=> {
+				setboletines(res.results)
+				setData(res)
+			})
 			.catch(error=>console.log(error))
 		},
 		[cookies.token],
@@ -313,7 +316,13 @@ export default function Boletines(){
 			bgcolor="hsla(0,0%,90%)"
 			mb={2}
 			>
-
+				<Grid container>
+					<Grid item xs={4}>
+						<Button color="primary" variant="contained">
+							Count: {data.count}
+						</Button>
+					</Grid>
+				</Grid>
 			</Box>
 
 			<Grid container spacing={2}>
@@ -324,9 +333,9 @@ export default function Boletines(){
 			boletines.map(item => (
 				<Grid item key={item.id} xs={12} md={6} lg={4}>
 					<Card className={classes.root}>
-						<CardActionArea className={classes.rooot} onClick={()=>boletinState(item)}>
+						<CardActionArea >
 							
-							<CardContent className={classes.content}>
+							<CardContent className={classes.content} onClick={()=>boletinState(item)}>
 								<Typography gutterBottom variant="h6" component="h2">
 									{item.titulo}
 								</Typography>
@@ -340,23 +349,24 @@ export default function Boletines(){
 								</Typography>
 							</CardContent>
 
-							<CardMedia
-							className={classes.imagen}
-							component="img"
-							alt="Contemplative Reptile"
-							height="140"
-							image={item.imagen}
-							/>
+							<CardActions>
+								<IconButton onClick={(event)=>{deleteBoletin(event, item.id)}} color="primary">
+									<Delete/>
+								</IconButton>
+								<Button size="small" color="primary">
+								Learn More
+								</Button>
+							</CardActions>
 						</CardActionArea>
+						<CardMedia
+						
+						className={classes.imagen}
+						component="img"
+						alt="Contemplative Reptile"
+						
+						image={item.imagen}
+						/>
 	
-						<CardActions>
-							<IconButton onClick={(event)=>{deleteBoletin(event, item.id)}} color="primary">
-								<Delete/>
-							</IconButton>
-							<Button size="small" color="primary">
-							Learn More
-							</Button>
-						</CardActions>
 					</Card>
 				</Grid>
 			))}
