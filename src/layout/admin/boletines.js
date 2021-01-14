@@ -24,6 +24,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import {toast, ToastContainer } from 'react-toastify';
 
 //Router
 import { useHistory } from "react-router-dom";
@@ -286,6 +287,7 @@ export default function Boletines(){
 
 	return (
 		<Box>
+			<ToastContainer/>
 			<Box
 			p={1}
 			borderRadius={5}
