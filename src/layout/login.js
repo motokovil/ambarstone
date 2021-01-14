@@ -80,7 +80,6 @@ export default function Login(){
         .then(data => {
             let access = jwt.verify(data.access,'motk')
             if (access.user_id){
-                toast.success("Welcome")
                 setToken(data.access)
                 fetch(proxy + backend + "api/v1/users/" + access.user_id + "/")
                 .then(data => data.json())

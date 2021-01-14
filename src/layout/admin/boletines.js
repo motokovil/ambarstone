@@ -272,6 +272,8 @@ export default function Boletines(){
 				setData(res)
 			})
 			.catch(err=>console.log(err))
+		}else{
+			toast.error("Last page")
 		}
 	}
 
