@@ -243,7 +243,10 @@ export default function Boletines(){
 					}
 				})
 				.then(res => res.json())
-				.then(res=> setboletines(res.results))
+				.then(res=> {
+					setboletines(res.results)
+					setData(res)
+				})
 				.catch(error=>console.log(error))
 			}
 		},[cookies.token]
@@ -361,7 +364,7 @@ export default function Boletines(){
 						size="small" 
 						color="primary" 
 						variant="contained"
-						onClick={()=>nextPag(data.next)}
+						onClick={()=>nextPag(data.previous)}
 						>
 							Prev
 						</Button>
