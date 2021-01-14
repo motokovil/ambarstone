@@ -254,6 +254,24 @@ export default function Boletines(){
 		
 	}
 
+	const nextPag = (next) => {
+		if (next !== null) {
+			fetch(proxy+next, {
+				method: "GET",
+				headers: {
+					"Content-type": "application/json",
+					"Authorization": "Bearer " + cookies.token,
+				}
+			})
+			.then(res => res.json())
+			.then(res => {
+				setboletines(res.results)
+				setData(res)
+			})
+			.catch(err=>console.log(err))
+		}
+	}
+
 	useEffect(()=>{
 		auth(cookies.token)
 		getBoletines()
@@ -316,10 +334,36 @@ export default function Boletines(){
 			bgcolor="hsla(0,0%,90%)"
 			mb={2}
 			>
-				<Grid container>
-					<Grid item xs={4}>
-						<Button color="primary" variant="contained">
+				<Grid container spacing={2}>
+					<Grid item>
+						<Button 
+						size="small" 
+						color="primary" 
+						variant="outlined"
+						>
 							Count: {data.count}
+						</Button>
+					</Grid>
+
+					<Grid item>
+						<Button 
+						size="small" 
+						color="primary" 
+						variant="contained"
+						onClick={()=>nextPag(data.next)}
+						>
+							next
+						</Button>
+					</Grid>
+
+					<Grid item>
+						<Button 
+						size="small" 
+						color="primary" 
+						variant="contained"
+						onClick={()=>nextPag(data.next)}
+						>
+							Prev
 						</Button>
 					</Grid>
 				</Grid>
@@ -359,11 +403,9 @@ export default function Boletines(){
 							</CardActions>
 						</CardActionArea>
 						<CardMedia
-						
 						className={classes.imagen}
 						component="img"
 						alt="Contemplative Reptile"
-						
 						image={item.imagen}
 						/>
 	
