@@ -71,7 +71,6 @@ export default function Boletines(){
 
 	const classes = useStyles();
 	const history = useHistory();
-	// const proxy = "https://cryptic-cors864.herokuapp.com/"
 	const backend = "https://newsletter8.herokuapp.com/"
 
 	//Hooks

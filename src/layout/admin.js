@@ -106,7 +106,7 @@ export default function PersistentDrawerLeft() {
 	const [open, setOpen] = useState(false);
 	const history = useHistory()
 	const [, setIsSuper] = useState({ superuser: null })
-	const [cookies] = useCookies(['token']);
+	const [cookies, removeCookie] = useCookies(['token']);
 	const [user, setUser] = useState({})
 	const backend = "https://newsletter8.herokuapp.com/"
 	
@@ -140,8 +140,13 @@ export default function PersistentDrawerLeft() {
 				history.push("/Login")
 				window.location.reload()
 			}
-		}, [history]
+		}, [history, setIsSuper]
 	)
+
+	const logout = () => {
+		removeCookie('token', { path: '/'})
+		history.push("/Login")
+	}
 
 	useEffect(() => {
 		auth(cookies.token)
@@ -173,9 +178,9 @@ export default function PersistentDrawerLeft() {
 							{user.username}
 						</Typography>
 
-						<Avatar>
-
-						</Avatar>
+						<Avatar
+						onClick={()=>logout()}
+						/>
 
 					</Toolbar>
 				</AppBar>
