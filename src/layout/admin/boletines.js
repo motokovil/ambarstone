@@ -405,7 +405,7 @@ export default function Boletines(){
 				<Alert severity="error">No hay boletines disponibles.</Alert>
 			</Grid>: 
 			boletines.map(item => (
-				<Grid item key={item.id} xs={12} md={6} lg={4}>
+				<Grid item key={item.id} xs={12} md={4} lg={4}>
 					<Card className={classes.root}>
 						<CardActionArea >
 							
