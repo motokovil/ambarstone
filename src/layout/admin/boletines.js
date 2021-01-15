@@ -116,7 +116,7 @@ export default function Boletines(){
 	const getBoletines = useCallback(
 		() => {
 
-			fetch(proxy + backend+"api/v1/boletines/", {
+			fetch(backend+"api/v1/boletines/", {
 				method: "GET",
 				headers: {
 					"Content-type": "application/json",
