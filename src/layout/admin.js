@@ -106,7 +106,7 @@ export default function PersistentDrawerLeft() {
 	const [open, setOpen] = useState(false);
 	const history = useHistory()
 	const [, setIsSuper] = useState({ superuser: null })
-	const [cookies, removeCookie] = useCookies(['token']);
+	const [cookies,, removeCookie] = useCookies(['token']);
 	const [user, setUser] = useState({})
 	const backend = "https://newsletter8.herokuapp.com/"
 	
@@ -138,13 +138,13 @@ export default function PersistentDrawerLeft() {
 			} catch (error) {
 				console.log("No has iniciado sesión: ", error.message)
 				history.push("/Login")
-				window.location.reload()
+				
 			}
-		}, [history, setIsSuper]
+		}, [history]
 	)
 
 	const logout = () => {
-		removeCookie('token', { path: '/'})
+		removeCookie('token', {path:'/'})
 		history.push("/Login")
 	}
 
