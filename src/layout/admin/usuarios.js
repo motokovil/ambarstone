@@ -6,12 +6,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import {Button, Box} from '@material-ui/core';
+import {Button, Box, Chip} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from "@material-ui/core";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 
 const jwt = require('jsonwebtoken')
 
@@ -36,6 +37,7 @@ export default function Usuarios() {
 
     const classes = useStyles();
     const backend = "https://newsletter8.herokuapp.com/"
+    const proxy = "https://cryptic-cors864.herokuapp.com/"
 
     //Hooks
     const [, setIsSuper] = useState({ superuser: null })
@@ -66,7 +68,7 @@ export default function Usuarios() {
 
     const getUsers = useCallback(
         () => {
-            fetch(backend+"api/v1/users/", {
+            fetch( proxy + backend+"api/v1/users/", {
                     method: "GET",
                     headers: {
                         "Content-type": "application/json",
@@ -84,7 +86,7 @@ export default function Usuarios() {
 
     const nextPag = (next) => {
 		if (next !== null) {
-			fetch(next, {
+			fetch( proxy + next, {
 				method: "GET",
 				headers: {
 					"Content-type": "application/json",
@@ -104,25 +106,36 @@ export default function Usuarios() {
 
     const setSuper = (user) => {
 
-        fetch( backend + "api/v1/users/" + user.id + "/super/", {
+        fetch(  backend + "api/v1/users/" + user.id + "/super/", {
             method: "PATCH",
             headers: {
                 "Content-type": "application/json",
                 "Authorization": "Bearer " + cookies.token,
             },
             body: JSON.stringify({
-                "is_superuseruser": !user.is_superuser})
+                "is_superuser": !user.is_superuser})
         })
-        .then(res => res.json())
-        .then(res => {
-            
+        .then(() => {
+            getUsers()
             toast.success("Excelente")
         })
         .catch(err => {
-            toast.error("Oops")
+            
             toast.error(err)
         })
     }
+
+    const deleteUser = (id) => {
+		fetch(proxy + backend + "api/v1/users/"+id+"/", {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": "Bearer "+cookies.token,
+            }
+		})
+		.then(() => getUsers())
+		.catch(err=>console.log(err))
+	}
 
     useEffect(() => {
         auth(cookies.token)
@@ -131,6 +144,7 @@ export default function Usuarios() {
 
     return (
         <Box>
+            <ToastContainer/>
             <Box
 			p={1}
 			borderRadius={5}
@@ -139,13 +153,12 @@ export default function Usuarios() {
 			>
 				<Grid container spacing={2}>
 					<Grid item>
-						<Button 
-						size="small" 
-						color="primary" 
-						variant="outlined"
-						>
-							Count: {data.count}
-						</Button>
+	
+                        <Chip
+                        icon={<PermIdentityIcon/>}
+                        label={data.count}
+                        color="inherit"
+                        />
 					</Grid>
 
 					{data.next === null? 
@@ -210,12 +223,16 @@ export default function Usuarios() {
                             <Typography className={classes.pos} color="textSecondary">
                             {item.email}
                             </Typography>
-                            <Typography variant="body2" component="p">
-                            Details
-                            </Typography>
+                            
                         </CardContent>
                         <CardActions>
-                            <Button size="small">Learn More</Button>
+                            <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={()=>deleteUser(item.id)}
+                            >
+                                Delete
+                            </Button>
                             <FormControlLabel
                                 control={
                                 <Switch

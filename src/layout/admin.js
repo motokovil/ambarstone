@@ -198,10 +198,18 @@ export default function PersistentDrawerLeft() {
 					<List>
 						<ListItem button >
 							<ListItemIcon>
-								<MailIcon />
+								<MailIcon color="primary" />
 							</ListItemIcon>
 							<Link className={classes.link} to={`${match.url}/Boletines`}>
 								<ListItemText primary="Boletines" />
+							</Link>
+						</ListItem>
+						<ListItem button >
+							<ListItemIcon>
+								<MailIcon color="primary"/>
+							</ListItemIcon>
+							<Link className={classes.link} to={`${match.url}/Usuarios`}>
+								<ListItemText primary="Usuarios" />
 							</Link>
 						</ListItem>
 					</List>
@@ -211,8 +219,8 @@ export default function PersistentDrawerLeft() {
 							<ListItemIcon>
 								<MailIcon />
 							</ListItemIcon>
-							<Link className={classes.link} to={`${match.url}/Usuarios`}>
-								<ListItemText primary="Usuarios" />
+							<Link className={classes.link} to={`${match.url}/Suscripciones`}>
+								<ListItemText primary="Suscripciones" />
 							</Link>
 						</ListItem>
 					</List>

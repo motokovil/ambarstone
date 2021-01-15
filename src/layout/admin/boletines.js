@@ -10,7 +10,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { Grid, Box, IconButton, TextField } from "@material-ui/core";
+import { Grid, Box, IconButton, TextField, Chip } from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import { Delete } from "@material-ui/icons";
 import Modal from '@material-ui/core/Modal';
@@ -18,6 +18,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Alert from '@material-ui/lab/Alert';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import BookIcon from '@material-ui/icons/Book';
 
 //selectFilter
 import InputLabel from '@material-ui/core/InputLabel';
@@ -344,13 +345,11 @@ export default function Boletines(){
 			>
 				<Grid container spacing={2}>
 					<Grid item>
-						<Button 
-						size="small" 
-						color="primary" 
-						variant="outlined"
-						>
-							Count: {data.count}
-						</Button>
+						<Chip
+						icon={<BookIcon/>}
+						label={data.count}
+						color="inherit"
+						/>
 					</Grid>
 
 					{data.next === null? 
@@ -382,7 +381,7 @@ export default function Boletines(){
 								size="small" 
 								variant="contained"
 								disabled
-								>
+								> 
 									Prev
 								</Button>
 							</Grid>
