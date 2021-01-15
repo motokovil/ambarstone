@@ -260,7 +260,7 @@ export default function Boletines(){
 
 	const nextPag = (next) => {
 		if (next !== null) {
-			fetch(proxy+next, {
+			fetch(next, {
 				method: "GET",
 				headers: {
 					"Content-type": "application/json",
@@ -310,6 +310,7 @@ export default function Boletines(){
 							>own</Button>
 						</ButtonGroup>
 					</Grid>
+
 					<Grid>
 					<FormControl color="primary" size="small" variant="outlined" className={classes.formControl}>
 						<InputLabel id="demo-simple-select-outlined-label">Autor</InputLabel>
@@ -352,27 +353,51 @@ export default function Boletines(){
 						</Button>
 					</Grid>
 
-					<Grid item>
-						<Button 
-						size="small" 
-						color="primary" 
-						variant="contained"
-						onClick={()=>nextPag(data.next)}
-						>
-							next
-						</Button>
-					</Grid>
+					{data.next === null? 
+						<Grid item>
+							<Button 
+							size="small" 
+							variant="contained"
+							disabled
+							>
+								Next
+							</Button>
+						</Grid>
+					:
+						<Grid item>
+							<Button 
+							size="small" 
+							color="primary" 
+							variant="contained"
+							onClick={()=>nextPag(data.next)}
+							>
+								Next
+							</Button>
+						</Grid>
+						}
 
-					<Grid item>
-						<Button 
-						size="small" 
-						color="primary" 
-						variant="contained"
-						onClick={()=>nextPag(data.previous)}
-						>
-							Prev
-						</Button>
-					</Grid>
+						{data.previous === null?
+							<Grid item>
+								<Button
+								size="small" 
+								variant="contained"
+								disabled
+								>
+									Prev
+								</Button>
+							</Grid>
+						:
+							<Grid item>
+								<Button 
+								size="small" 
+								color="primary" 
+								variant="contained"
+								onClick={()=>nextPag(data.previous)}
+								>
+									Prev
+								</Button>
+							</Grid>
+						}
 				</Grid>
 			</Box>
 

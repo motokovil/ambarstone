@@ -10,7 +10,7 @@ import Login from './layout/login'
 import SignUp from './layout/signup'
 import Admin from "./layout/admin"
 import Dashboard from "./layout/dashboard"
-import App2 from "./layout/admin/new";
+
 
 //MUI
 import {ThemeProvider} from '@material-ui/core/styles';
@@ -26,7 +26,6 @@ function App() {
           <Route path="/SignUp" component={SignUp}/>
           <Route path="/Admin" component={Admin}/>
           <Route path="/Dashboard" component={Dashboard}/>
-          <Route path={"/New"} component={App2}/>
         </Switch>
       </Router>
     </ThemeProvider>
