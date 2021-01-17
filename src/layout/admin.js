@@ -31,6 +31,7 @@ import Avatar from '@material-ui/core/Avatar';
 //SubComponentes
 import Boletines from "./admin/boletines";
 import Usuarios from "./admin/usuarios";
+import Home_Admin from "./admin/home"
 
 const jwt = require('jsonwebtoken')
 
@@ -217,6 +218,14 @@ export default function PersistentDrawerLeft() {
 								<ListItemText primary="Usuarios" />
 							</Link>
 						</ListItem>
+						<ListItem button >
+							<ListItemIcon>
+								<MailIcon color="primary"/>
+							</ListItemIcon>
+							<Link className={classes.link} to={`${match.url}/Home`}>
+								<ListItemText primary="Home" />
+							</Link>
+						</ListItem>
 					</List>
 					<Divider />
 					<List>
@@ -241,6 +250,7 @@ export default function PersistentDrawerLeft() {
 						<Switch>
 							<Route path={`${match.url}/Boletines`} component={Boletines} />
 							<Route path={`${match.url}/Usuarios`} component={Usuarios}/>
+							<Route path={`${match.url}/Home`} component={Home_Admin}/>
 						</Switch>
 					}
 				</main>

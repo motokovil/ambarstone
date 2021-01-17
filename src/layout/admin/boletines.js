@@ -346,8 +346,8 @@ export default function Boletines(){
 					<Grid item>
 						<Chip
 						icon={<BookIcon/>}
-						label={data.count}
-						color="inherit"
+						label={"Boletines: " + data.count}
+						color="primary"
 						/>
 					</Grid>
 
@@ -405,7 +405,7 @@ export default function Boletines(){
 				<Alert severity="error">No hay boletines disponibles.</Alert>
 			</Grid>: 
 			boletines.map(item => (
-				<Grid item key={item.id} xs={12} md={4} lg={4}>
+				<Grid item key={item.id} xs={12} md={6} lg={4}>
 					<Card className={classes.root}>
 						<CardActionArea >
 							
@@ -427,7 +427,10 @@ export default function Boletines(){
 								<IconButton onClick={(event)=>{deleteBoletin(event, item.id)}} color="primary">
 									<Delete/>
 								</IconButton>
-								<Button size="small" color="primary">
+								<Button 
+								size="small" 
+								variant="contained"
+								color="primary">
 								Learn More
 								</Button>
 							</CardActions>

@@ -31,6 +31,9 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 12,
     },
+    border: {
+        borderRadius: "5px"
+    }
 });
 
 export default function Usuarios() {
@@ -117,7 +120,11 @@ export default function Usuarios() {
         })
         .then(() => {
             getUsers()
-            toast.success("Excelente")
+            toast("¡Cambios realizados!",{
+                className: "heyou",
+                draggable: true,
+                position: toast.POSITION.TOP_CENTER
+            })
         })
         .catch(err => {
             
@@ -156,8 +163,8 @@ export default function Usuarios() {
 	
                         <Chip
                         icon={<PermIdentityIcon/>}
-                        label={data.count}
-                        color="inherit"
+                        label={"Usuarios: " + data.count}
+                        color="primary"
                         />
 					</Grid>
 
@@ -229,6 +236,7 @@ export default function Usuarios() {
                             <Button
                             variant="contained"
                             color="primary"
+                            size="small"
                             onClick={()=>deleteUser(item.id)}
                             >
                                 Delete
@@ -242,7 +250,7 @@ export default function Usuarios() {
                                     color="primary"
                                 />
                                 }
-                                label="Primary"
+                                label="Super"
                             />
                         </CardActions>
                     </Card>
