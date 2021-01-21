@@ -106,7 +106,6 @@ export default function PersistentDrawerLeft() {
 	const theme = useTheme();
 	const [open, setOpen] = useState(false);
 	const history = useHistory()
-	const [, setIsSuper] = useState({ superuser: null })
 	const [cookies,, removeCookie] = useCookies(['token']);
 	const [user, setUser] = useState({})
 	const backend = "https://newsletter8.herokuapp.com/"
@@ -130,7 +129,6 @@ export default function PersistentDrawerLeft() {
 						.then(data => data.json())
 						.then(user => {
 							console.log("Logged in")
-							setIsSuper({ superuser: user.is_superuser })
 							setUser(user)
 						})
 						.catch(error => console.log(error))
