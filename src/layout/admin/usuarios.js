@@ -54,7 +54,13 @@ export default function Usuarios() {
         try {
             let access = jwt.verify(token, 'motk')
             if (access.user_id) {
-                fetch(backend+"api/v1/users/" + access.user_id + "/")
+                fetch(backend+"api/v1/users/" + access.user_id + "/", {
+                    method: "GET",
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": "Bearer " + token, 
+                    }
+                })
                     .then(data => data.json())
                     .then(user => {
                         console.log("Logged in")

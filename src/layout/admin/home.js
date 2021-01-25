@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 
+
 const jwt = require('jsonwebtoken')
 
 const useStyles = makeStyles((theme)=>({
@@ -18,6 +19,8 @@ const useStyles = makeStyles((theme)=>({
 }))
 
 export default function Home_Admin(){
+    const [boletines, setboletines] = useState([])
+    const [users, setUsers] = useState([])
     const [cookies] = useCookies(['token']);
     const [user, setUser] = useState({})
     const [suscripciones, setSuscrip] = useState([])
@@ -30,18 +33,26 @@ export default function Home_Admin(){
 			try {
 				let access = jwt.verify(token, 'motk')
 				if (access.user_id) {
-					fetch(backend + "api/v1/users/" + access.user_id + "/")
+					fetch(backend + "api/v1/users/" + access.user_id + "/", {
+                        method: "GET",
+                        headers: { 
+                            "Content-type": "application/json",
+                            "Authorization": "Bearer " + token, 
+                        }
+                    })
 					.then(data => data.json())
 					.then(user => {
 						console.log("Logged in")
                         setUser(user)
-                        fetch(backend + "api/v1/users/" + user.id + "/suscripciones/")
-                        .then(res=>res.json())
-                        .then(res => {
-                            console.log(res)
-                            setSuscrip(res)
+                        fetch(backend + "api/v1/users/" + user.id + "/suscripciones/", {
+                            method: "GET",
+                            headers: { 
+                                "Content-type": "application/json",
+                                "Authorization": "Bearer " + token, 
+                            }
                         })
-                        
+                        .then(res=>res.json())
+                        .then(res => {setSuscrip(res)})
 					})
 					.catch(error => console.log(error))
 				}
@@ -53,10 +64,47 @@ export default function Home_Admin(){
 			}
 		}, [history]
     )
+
+    const getBoletines = useCallback(
+		() => {
+
+			fetch(backend+"api/v1/boletines/", {
+				method: "GET",
+				headers: {
+					"Content-type": "application/json",
+					"Authorization": "Bearer " + cookies.token,
+				}
+			})
+			.then(res => res.json())
+			.then(res=> {
+				setboletines(res.results)
+			})
+			.catch(error=>console.log(error))
+		},
+		[cookies.token],
+	)
+
+	const getUsers = useCallback(
+		() => {
+			fetch(backend+"api/v1/users/", {
+				method: "GET",
+				headers: {
+					"Content-type": "application/json",
+					"Authorization": "Bearer "+cookies.token,
+				}
+			})
+			.then(res => res.json())
+			.then(res=> setUsers(res.results))
+			.catch(error=>console.log(error))
+		},
+		[cookies.token],
+	)
     
     useEffect(() => {
-		auth(cookies.token)
-	}, [cookies.token, auth])
+        auth(cookies.token)
+        getBoletines()
+        getUsers()
+	}, [cookies.token, auth, getBoletines, getUsers])
 
     return (
         <Box>
@@ -106,16 +154,48 @@ export default function Home_Admin(){
                     </Typography>
                 </Box>
 
-                <Grid container>
-                    <Grid item>
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
                         <Box
-                        bgcolor="white"
+                        border={1}
+                        borderColor="hsla(0,0%,100%,.7)"
                         borderRadius={5}
                         p={1}>
                             <Typography
                             variant="body2"
+                            className={classes.typoLight}
                             >
-                                Tienes {suscripciones.length} suscripciones
+                                Suscripciones: {suscripciones.length}
+                            </Typography>
+                        </Box>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <Box
+                        border={1}
+                        borderColor="hsla(0,0%,100%,.7)"
+                        borderRadius={5}
+                        p={1}>
+                            <Typography
+                            variant="body2"
+                            className={classes.typoLight}
+                            >
+                                Boletines: {boletines.length}
+                            </Typography>
+                        </Box>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <Box
+                        border={1}
+                        borderColor="hsla(0,0%,100%,.7)"
+                        borderRadius={5}
+                        p={1}>
+                            <Typography
+                            variant="body2"
+                            className={classes.typoLight}
+                            >
+                                Usuarios: {users.length}
                             </Typography>
                         </Box>
                     </Grid>

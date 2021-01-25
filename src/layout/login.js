@@ -50,38 +50,55 @@ export default function Login(){
     const setToken = (token) => {
         setCookie('token', token, {path:'/'})
     }
-    const auth = (token) => {
-        try {
-            let access = jwt.verify(token, 'motk')
-            if(access.user_id){
-                fetch(proxy + backend + "api/v1/users/"+access.user_id+"/")
-                .then(data=>data.json())
-                .then(user=>{
-                    console.log("Logged in")
-                    setIsSuper({superuser:user.is_superuser})
-                })
-                .catch(error=>console.log(error))
+    const auth = useCallback(
+        (token) => {
+            try {
+                let access = jwt.verify(token, 'motk')
+                if(access.user_id){
+                    fetch(proxy + backend + "api/v1/users/"+access.user_id+"/", {
+                        method: "GET",
+                        headers: { 
+                            "Content-type": "application/json",
+                            "Authorization": "Bearer " + token, 
+                        }
+                    })
+                    .then(data=>data.json())
+                    .then(user=>{
+                        console.log("Logged in")
+                        setIsSuper({superuser:user.is_superuser})
+                    })
+                    .catch(error=>console.log(error))
+                }
+    
+            } catch (error) {
+                console.log("No hay sesiones activas: ",error.message)
             }
+    
+        }, []
+    )
 
-        } catch (error) {
-            console.log("No hay sesiones activas: ",error.message)
-        }
-
-    }
     const login = (event) => {
         event.preventDefault()
 
         fetch(proxy + backend + "api/token/", {
             method: "POST",
             body: JSON.stringify(loginForm),
-            headers: { "Content-type": "application/json" }
+            headers: { 
+                "Content-type": "application/json",
+                "Authorization": "Bearer " + cookies, 
+            }
         })
         .then(res => res.json())
         .then(data => {
             let access = jwt.verify(data.access,'motk')
             if (access.user_id){
                 setToken(data.access)
-                fetch(proxy + backend + "api/v1/users/" + access.user_id + "/")
+                fetch(proxy + backend + "api/v1/users/" + access.user_id + "/", {
+                    headers: { 
+                        "Content-type": "application/json",
+                        "Authorization": "Bearer " + cookies, 
+                    }
+                })
                 .then(data => data.json())
                 .then(user=>{
                     if(user.is_superuser){
@@ -118,7 +135,7 @@ export default function Login(){
     useEffect(()=>{
         auth(cookies.token)
         permission(isSuper.superuser)
-    },[cookies.token, isSuper.superuser, permission])
+    },[cookies.token, isSuper.superuser, permission, auth])
 
     return (
         <Box
